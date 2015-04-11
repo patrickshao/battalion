@@ -123,7 +123,7 @@ void mousePressed() {
       return;
     }
     //only select if not selected already and the node is owned by player
-    if (selected == null /*&& grid[x][y].getPlayer() == currentPlayer*/) {
+    if (selected == null && grid[x][y].getPlayer() == currentPlayer) {
       int mx = (mouseX-10)%bxSize;
       int my = (mouseY-10)%bySize;
       float dist = sqrt(pow(bxSize/2-mx,2)+pow(bySize/2-my,2));
@@ -132,8 +132,12 @@ void mousePressed() {
       }
     //if there is a selected node
     } else if (selected != null) {
-      //checks if the currently selected node is not a player
-      selected.move(grid[x][y],selected.getAmount());
+      if (selected.isConnected(grid[x][y]) {
+        selected.move(grid[x][y],selected.getAmount());        
+      } else {
+        selected.addConnected(grid[x][y]);
+        grid[x][y].addConnected(selected);
+      }
       //Add a line to clear up the selected node
     } 
   }
@@ -145,7 +149,6 @@ void mousePressed() {
         currentPlayer = currentPlayer%2+1;
       if (currAdded >= numStartPos*2) {
         isStart = false;
-
       }
     }
   
