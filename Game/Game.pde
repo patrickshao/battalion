@@ -65,17 +65,18 @@ void makeGrid(int x,int y) {
       //Set up low/high parameters
       //Ensures we don't add nodes outside of grid
       int loX = max(i-1,0);
-      int hiX = min(i+1,x-1);
+      int hiX = min(i+2,x);
       int loY = max(j-1,0);
-      int hiY = min(j+1,y-1);
+      int hiY = min(j+2,y);
       
       //Loop through neighbors and add them
-      for (int r = loX; r <= hiX; r++) {
-        for (int c = loY; c <= hiY; c++) {
+      for (int r = loX; r < hiX; r++) {
+        for (int c = loY; c < hiY; c++) {
           //Make sure we are not adding self as a neighbor
-          if (r != i && c != j ) {
-            grid[i][j].addNeighbor(grid[r][c]);
+          if (r == i && c == j ) {
+            continue;
           }
+          grid[i][j].addNeighbor(grid[r][c]);
         }
       }
       
@@ -171,10 +172,6 @@ void drawSprite(char t, float x, float y) {
   image(uImage,x,y);
 }
 
-/*
- * Draws the GUI on the side, 
- * 
- */
 void drawGUI() {
   fill(255);
   rect(xGUIStart+xShift, yGUIStart+40,240,50);
@@ -224,6 +221,9 @@ void mousePressed() {
       }
     //if there is a selected node
     } else if (selected != null) {
+      if (!grid[x][y].isNeighbor(selected)) {
+        return;
+      }
       int maxAmount = selected.getAmount();
       int sendAmount = maxAmount;
       if (selected.isConnected(grid[x][y])) {
