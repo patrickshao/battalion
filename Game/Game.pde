@@ -9,7 +9,7 @@ int xSize = 10;
 int ySize = 10;
 int bxSize = xField/xSize;
 int bySize = yField/ySize;
-int nodeSize = (int)(bxSize*(.90));
+int nodeSize = (int)(bxSize*(.80));
 Node selected;
 int prevX;
 int prevY;
@@ -74,17 +74,19 @@ void makeGrid(int x,int y) {
 void drawGrid(int x, int y) {
   int pOwner;
   int unitVal;
+  float iCenter;
+  float jCenter;
   ArrayList<Node> nList;
   for (int i = 0; i < x; i++) {
     for(int j = 0; j <y; j++) {
+      //Some variables to save calculations
+      iCenter = i*bxSize+(bxSize/2)+offset;
+      jCenter = j*bySize+(bySize/2)+offset;
+      
       //default color settings
       fill(255);
       stroke(0);
-      
-      //If the node is selected, highlight it
-      if (selected != null && grid[i][j].equals(selected)) {
-        stroke(255,255,0);
-      }
+      strokeWeight(1);
       
       //Check for color change
       pOwner = grid[i][j].getPlayer();
@@ -94,9 +96,30 @@ void drawGrid(int x, int y) {
         fill(p2C);
       }
       
-      //Draw a connection
-      nList = grid[i][j].getNeighbor
-      fill(0,255,0);
+      //Draw connections
+      nList = grid[i][j].getConnected();
+      stroke(0,255,0);
+      for (Node n: nList) {
+        float in = n.getX();
+        float jn = n.getY();
+        //Avoid redrawing connections
+        if ((in <= i && jn <= j) || (in < i && jn > j)) {
+          continue;
+        }
+        float iNeighb = in*bxSize+(bxSize/2)+offset;
+        float jNeighb = jn*bySize+(bySize/2)+offset;
+        strokeWeight(10);
+        line(iCenter,jCenter,iNeighb,jNeighb);
+      }
+      
+      //Outlines for Nodes
+      strokeWeight(1);
+      stroke(0);     
+      //If the node has been highlighted, highlight it
+      if (selected != null && grid[i][j].equals(selected)) {
+        stroke(255,255,0);
+        strokeWeight(5);
+      }
       
       //Draw the nodes
       ellipse(bxSize*(i+0.5)+offset,bySize*(j+0.5)+offset,nodeSize,nodeSize);
@@ -108,7 +131,7 @@ void drawGrid(int x, int y) {
       if (unitVal > 0) {
         textSize(20);
         textAlign(CENTER);
-        text(unitVal,i*bxSize+(bxSize/2)+offset, j*bySize+(bySize/2)+offset);
+        text(unitVal,iCenter,jCenter);
       }
     }
   }
