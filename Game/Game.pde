@@ -132,11 +132,16 @@ void mousePressed() {
       }
     //if there is a selected node
     } else if (selected != null) {
-      if (selected.isConnected(grid[x][y]) {
-        selected.move(grid[x][y],selected.getAmount());        
+      if (selected.isConnected(grid[x][y])) {
+        selected.move(grid[x][y],grid[x][y].getAmount());
+        System.out.println("move");
+        switchPlayer();
+                
       } else {
         selected.addConnected(grid[x][y]);
         grid[x][y].addConnected(selected);
+        System.out.println("add Connection");
+        switchPlayer();
       }
       //Add a line to clear up the selected node
     } 
@@ -152,4 +157,16 @@ void mousePressed() {
       }
     }
   
+}
+
+void switchPlayer() {
+  currentPlayer = currentPlayer%2+1;
+  for(int i = 0; i<xSize; i++) {
+    for(int j = 0; j<ySize; j++) {
+      if(grid[i][j].getPlayer() != 0) {
+        grid[i][j].setAmount(grid[i][j].getAmount()+1);
+      }    
+    }
+  }
+  selected = null;
 }
