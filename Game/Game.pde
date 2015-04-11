@@ -1,4 +1,5 @@
 PImage bgImage;
+PImage uImage;
 int xScreen = 900;
 int yScreen = 620;
 int xField = 600;
@@ -29,6 +30,7 @@ void setup() {
 
 void draw(){
   background(150);
+  imageMode(CORNER);
   image(bgImage,0,0);
   noFill();
   noStroke();
@@ -124,6 +126,9 @@ void drawGrid(int x, int y) {
       //Draw the nodes
       ellipse(bxSize*(i+0.5)+offset,bySize*(j+0.5)+offset,nodeSize,nodeSize);
       
+      //Apply sprites
+      drawSprite(grid[i][j].getType(),iCenter,jCenter);
+      
       //Draw the unit numbers
       fill(0);
       unitVal = grid[i][j].getAmount();
@@ -135,6 +140,20 @@ void drawGrid(int x, int y) {
       }
     }
   }
+}
+
+void drawSprite(char t, float x, float y) {
+  imageMode(CENTER);
+  if (t == 'r') {
+    uImage = loadImage("images/heavy.png");
+  } else if (t == 'p') {
+    uImage = loadImage("images/archer.png");
+  } else if (t == 's') {
+    uImage = loadImage("images/light.png");
+  } else {
+    return; //Else do not draw a sprite
+  }
+  image(uImage,x,y);
 }
 
 /*
