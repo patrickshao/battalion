@@ -1,11 +1,15 @@
-int xScreen = 1000;
-int yScreen = 700;
+int xScreen = 600;
+int yScreen = 600;
 Node[][] grid;
 int xSize = 10;
 int ySize = 10;
-int nodeSize = 50;
+int nodeSize = 45;
 int bxSize = xScreen/xSize;
 int bySize = yScreen/ySize;
+Node selected;
+int prevX;
+int prevY;
+int currentPlayer = 1;
 
 void setup() {
   size(xScreen,yScreen);
@@ -22,7 +26,7 @@ void makeGrid(int x,int y) {
   for (int i = 0; i < x; i++) {
     for(int j = 0; j <y; j++) {
       grid[i][j] = new Node(i,j);
-      ellipse(bxSize*(i+0.5),bySize*(j+0.5),50,50);
+      ellipse(bxSize*(i+0.5),bySize*(j+0.5),nodeSize,nodeSize);
     }
   }
   
@@ -52,5 +56,12 @@ void makeGrid(int x,int y) {
 }
 
 void mousePressed() {
-  
+  int x = mouseX/bxSize;
+  int y = mouseY/bySize;
+  if (selected == null && grid[x][y].getPlayer() == currentPlayer) {
+    selected = grid[x][y];
+  } else {
+      
+    
+  }
 }
