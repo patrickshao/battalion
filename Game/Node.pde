@@ -70,15 +70,23 @@ class Node{
     if(connected.contains(target)){
       if(moving<=amount){
         if(target.getPlayer()==0){
-        target.setPlayer(controllingPlayer);
-        target.setType(type);
-        target.setAmount(moving);
-        amount-=moving;
+          target.setPlayer(controllingPlayer);
+          target.setType(type);
+          target.setAmount(moving);
+          amount-=moving;
+          if(amount==0){
+            setType(' ');
+            setPlayer(0);
+          }
         }
         else if(target.getPlayer()==controllingPlayer){
           if(target.getType()==type){
             target.setAmount(target.getAmount()+moving);
             amount-=moving;
+            if(amount==0){
+              setType(' ');
+              setPlayer(0);
+            }
           }
           else{
             println("Move blocked");
@@ -97,7 +105,7 @@ class Node{
     }
   }
   
-  public void attack(Node n, int amount){
+  public void attack(Node n, int amt){
     char opponent=n.getType();
     int oppamt=n.getAmount();
     if (amount>0){
@@ -108,10 +116,24 @@ class Node{
       }
       else if (opproll>myroll){
         decAmount();
+        amt--;
       }
       else{//tie
-        
-      }  
+        if((type=='r' && n.getType()=='s')||(type=='s' && n.getType()=='p')||(type=='p' && n.getType()=='r')){
+          n.decAmount();
+        }
+        else if((type=='r'&&n.getType()=='p')||(type=='s'&&n.getType()=='r')||(type=='p'&&n.getType()=='s')){
+          decAmount();
+          amt--;
+        }
+      }
+      if(n.getAmount()>0){
+        attack(n, amt); 
+      }
+      else{
+        n.setPlayer(0);
+        move(n, amt);
+      }
     }   
   }
 }
