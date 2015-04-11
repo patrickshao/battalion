@@ -12,14 +12,10 @@ class Node{
     this.x=x;
     this.y=y;
     amount=0;
-    type = '';
+    type = ' ';
     connected=new ArrayList<Node>(0);
     neighbors=new ArrayList<Node>(0);
     int controllingPlayer=0;
-  }
-  
-  public void setPlayer(int i){
-    controllingPlayer=i;
   }
   
   public void addNeighbor(Node n){
@@ -85,9 +81,8 @@ class Node{
     }
   }
   
-//  public void attack(Node n, int amount){
+  public void attack(Node n, int amount){
     
-  
   }
     
 }
