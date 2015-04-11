@@ -21,11 +21,8 @@ boolean isStart = true;
 int numStartPos = 3;
 int currAdded = 0;
 
-PFont f;
+import static javax.swing.JOptionPane.*;
 
-// Variable to store text currently being typed
-String typing = "";
-// Variable to store saved text when return is hit
 String saved = "";
 
 //Some GUI stuff
@@ -194,12 +191,6 @@ void drawGUI() {
   fill(200);
   rectMode(CENTER);
   rect(xGUIStart+(xScreen-xGUIStart)/2,yGUIStart+yScreen/2,160,35);
-  // Display Numbers for Unit Moving
-  fill(255);
-   text("Unit Move",xGUIStart+xShift, yGUIStart+textS+yScreen/2-60);
-  fill(0);
-  textSize(20);
-  text(typing,xGUIStart+(xScreen-xGUIStart)/2,yGUIStart+yScreen/2+5);
 }
 
 void switchPlayer() {
@@ -213,6 +204,7 @@ void switchPlayer() {
   }
   selected = null;
 }
+
 
 void mousePressed() {
   int x = mouseX/bxSize;
@@ -232,8 +224,26 @@ void mousePressed() {
       }
     //if there is a selected node
     } else if (selected != null) {
+      int maxAmount = selected.getAmount();
+      int sendAmount = maxAmount;
       if (selected.isConnected(grid[x][y])) {
-        selected.move(grid[x][y],Integer.parseInt(saved));
+        saved = showInputDialog("Please enter unit amount to move. (Default move all units).");
+        if (saved == null) {
+          exit();
+        } else if (saved == "") {
+        } else if (!saved.matches("[0-9]+$")) {
+           showMessageDialog(null, "Invalid Number, sending default unit amount.", 
+          "Alert", ERROR_MESSAGE);
+          selected.move(grid[x][y],grid[x][y].getAmount());
+        } else {
+          if (Integer.parseInt(saved) > maxAmount) {
+            showMessageDialog(null, "Number too high, sending default unit amount.", 
+            "Alert", ERROR_MESSAGE);
+          } else {
+            sendAmount = Integer.parseInt(saved);
+          }
+        }
+        selected.move(grid[x][y],sendAmount);
         System.out.println("move");
         switchPlayer();
                 
@@ -264,17 +274,4 @@ void mousePressed() {
       }
     }
   
-}
-
-void keyPressed() {
-  // If the return key is pressed, save the String and clear it
-  if (key == '\n' ) {
-    saved = typing;
-    // A String can be cleared by setting it equal to ""
-    typing = ""; 
-  } else {
-    // Otherwise, concatenate the String
-    // Each character typed by the user is added to the end of the String variable.
-    typing = typing + key; 
-  }
 }
