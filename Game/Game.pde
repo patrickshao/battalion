@@ -14,6 +14,9 @@ int prevX;
 int prevY;
 int currentPlayer = 1;
 
+color p1C = color(255,0,0);
+color p2C = color(0,0,255);
+
 void setup() {
   size(xScreen,yScreen);
   makeGrid(xSize,ySize);
@@ -24,6 +27,7 @@ void draw(){
   fill(255);
   rect(offset,offset,xField,yField);
   drawGrid(xSize,ySize);
+  drawGUI();
 }
 
 void makeGrid(int x,int y) {
@@ -80,6 +84,21 @@ void drawGrid(int x, int y) {
  * 
  */
 void drawGUI() {
+  //Calculate location of where to place the text
+  int xGUIStart = xField+2*offset;
+  int yGUIStart = offset;
+  int xShift = (xScreen - xGUIStart)/2;
+  
+  int textS = 32;
+  if (currentPlayer == 1) {
+    fill(p1C);
+  }
+  else {
+    fill(p2C);
+  }
+  textSize(textS);
+  textAlign(CENTER);
+  text("Player "+ currentPlayer+"'s Turn",xGUIStart+xShift, yGUIStart+textS);
 }
 
 void mousePressed() {
