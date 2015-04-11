@@ -24,34 +24,18 @@ class DialogBox{
   }
   
   //instructions for draw, taken from the internet.
-//  void draw() {
-//    background(255);
-//    int indent = 25;
-//    
-//    // Set the font and fill for text
-//    textFont(f);
-//    fill(0);
-//    
-//    // Display everything
-//    text("Click in this applet and type. \nHit return to save what you typed. ", indent, 40);
-//    text(typing,indent,90);
-//    text(saved,indent,130);
-//  }
-  
-  //move this part of keypressed into game. Make a dialog box called db.
-  void keyPressed() {
-    if (isActive()){
-      // If the return key is pressed, save the String and clear it
-      if (key == '\n' ) {
-        saved = typing;
-        // A String can be cleared by setting it equal to ""
-        typing = ""; 
-      } else {
-        // Otherwise, concatenate the String
-        // Each character typed by the user is added to the end of the String variable.
-        typing = typing + key; 
-      }
-    }
+  void drawBox() {
+    fill(150);
+    rect(this.x,this.y,this.l,this.w);
+    int indent = 25;
+    
+    // Set the font and fill for text
+    textFont(f);
+    fill(0);
+    
+    // Display everything
+    text(typing,indent,90);
+    text(saved,indent,130);
   }
   
   public boolean isActive(){

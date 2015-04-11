@@ -1,3 +1,5 @@
+//Text input implementation inside game was obtained from Daniel Shiffman,http://www.learningprocessing.com  Example 18-1: User input
+
 PImage bgImage;
 PImage uImage;
 int xScreen = 900;
@@ -18,6 +20,18 @@ int currentPlayer = 1;
 boolean isStart = true;
 int numStartPos = 3;
 int currAdded = 0;
+
+PFont f;
+
+// Variable to store text currently being typed
+String typing = "";
+// Variable to store saved text when return is hit
+String saved = "";
+
+//Some GUI stuff
+int xGUIStart = xField+2*offset;
+int yGUIStart = offset;
+int xShift = (xScreen - xGUIStart)/2;
 
 color p1C = color(255,0,0);
 color p2C = color(0,0,255);
@@ -100,7 +114,7 @@ void drawGrid(int x, int y) {
       
       //Draw connections
       nList = grid[i][j].getConnected();
-      stroke(0,255,0);
+      stroke(0,180,0);
       for (Node n: nList) {
         float in = n.getX();
         float jn = n.getY();
@@ -118,6 +132,10 @@ void drawGrid(int x, int y) {
       strokeWeight(1);
       stroke(0);     
       //If the node has been highlighted, highlight it
+      if (pOwner == currentPlayer && !isStart) {
+        stroke(0,255,0);
+        strokeWeight(3);
+      }
       if (selected != null && grid[i][j].equals(selected)) {
         stroke(255,255,0);
         strokeWeight(5);
@@ -130,13 +148,13 @@ void drawGrid(int x, int y) {
       drawSprite(grid[i][j].getType(),iCenter,jCenter);
       
       //Draw the unit numbers
-      fill(0);
       unitVal = grid[i][j].getAmount();
       //Only draw units if higher than 0 (non-empty node)
       if (unitVal > 0) {
-        textSize(20);
+        fill(255);
+        textSize(nodeSize/4);
         textAlign(CENTER);
-        text(unitVal,iCenter,jCenter);
+        text(unitVal,iCenter+nodeSize/4,jCenter+nodeSize/4);
       }
     }
   }
@@ -161,11 +179,6 @@ void drawSprite(char t, float x, float y) {
  * 
  */
 void drawGUI() {
-  //Calculate location of where to place the text
-  int xGUIStart = xField+2*offset;
-  int yGUIStart = offset;
-  int xShift = (xScreen - xGUIStart)/2;
-  
   int textS = 32;
   if (currentPlayer == 1) {
     fill(p1C);
@@ -176,16 +189,35 @@ void drawGUI() {
   textSize(textS);
   textAlign(CENTER);
   text("Player "+ currentPlayer+"'s Turn",xGUIStart+xShift, yGUIStart+textS);
+  fill(200);
+  rectMode(CENTER);
+  rect(xGUIStart+(xScreen-xGUIStart)/2,yGUIStart+yScreen/2,100,35);
+  // Display everything
+  fill(0);
+  textSize(20);
+  text(typing,xGUIStart+(xScreen-xGUIStart)/2,yGUIStart+yScreen/2+5);
+}
+
+void switchPlayer() {
+  currentPlayer = currentPlayer%2+1;
+  for(int i = 0; i<xSize; i++) {
+    for(int j = 0; j<ySize; j++) {
+      if(grid[i][j].getPlayer() != 0) {
+        grid[i][j].setAmount(grid[i][j].getAmount()+1);
+      }    
+    }
+  }
+  selected = null;
 }
 
 void mousePressed() {
   int x = mouseX/bxSize;
   int y = mouseY/bySize;
-  if (!isStart) {
-    //If click outside grid bounds, do nothing
+  //If click outside grid bounds, do nothing
     if (mouseX <= offset || mouseX >= xField+offset || mouseY <= offset || mouseY >= yField+offset) {
       return;
     }
+  if (!isStart) {
     //only select if not selected already and the node is owned by player
     if (selected == null && grid[x][y].getPlayer() == currentPlayer) {
       int mx = (mouseX-10)%bxSize;
@@ -197,7 +229,7 @@ void mousePressed() {
     //if there is a selected node
     } else if (selected != null) {
       if (selected.isConnected(grid[x][y])) {
-        selected.move(grid[x][y],selected.getAmount());
+        selected.move(grid[x][y],Integer.parseInt(saved));
         System.out.println("move");
         switchPlayer();
                 
@@ -230,14 +262,15 @@ void mousePressed() {
   
 }
 
-void switchPlayer() {
-  currentPlayer = currentPlayer%2+1;
-  for(int i = 0; i<xSize; i++) {
-    for(int j = 0; j<ySize; j++) {
-      if(grid[i][j].getPlayer() != 0) {
-        grid[i][j].setAmount(grid[i][j].getAmount()+1);
-      }    
-    }
+void keyPressed() {
+  // If the return key is pressed, save the String and clear it
+  if (key == '\n' ) {
+    saved = typing;
+    // A String can be cleared by setting it equal to ""
+    typing = ""; 
+  } else {
+    // Otherwise, concatenate the String
+    // Each character typed by the user is added to the end of the String variable.
+    typing = typing + key; 
   }
-  selected = null;
 }
