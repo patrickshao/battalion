@@ -46,6 +46,10 @@ class Node{
     return amount;
   }
   
+  public void decAmount(){
+    amount -=1;
+  }
+  
   public void setType(char c){
     type = c;
   }
@@ -99,7 +103,13 @@ class Node{
     if (amount>0){
       int myroll=int(random(6));
       int opproll=int(random(6));
-      
+      if (myroll>opproll){
+        n.decAmount();
+      else if (opproll>myroll){
+        decAmount();
+      }
+      else{//tie
+        
     }
   }
     
