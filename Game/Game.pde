@@ -1,3 +1,4 @@
+PImage bgImage;
 int xScreen = 900;
 int yScreen = 620;
 int xField = 600;
@@ -13,18 +14,24 @@ Node selected;
 int prevX;
 int prevY;
 int currentPlayer = 1;
+boolean isStart = true;
+int numStartPos = 3;
+int currAdded = 0;
 
 color p1C = color(255,0,0);
 color p2C = color(0,0,255);
 
 void setup() {
+  bgImage = loadImage("images/background.jpg");
   size(xScreen,yScreen);
   makeGrid(xSize,ySize);
 }
 
 void draw(){
   background(150);
-  fill(255);
+  image(bgImage,0,0);
+  noFill();
+  noStroke();
   rect(offset,offset,xField,yField);
   drawGrid(xSize,ySize);
   drawGUI();
@@ -65,6 +72,7 @@ void makeGrid(int x,int y) {
 }
 
 void drawGrid(int x, int y) {
+  int pOwner;
   for (int i = 0; i < x; i++) {
     for(int j = 0; j <y; j++) {
       fill(255);
@@ -72,6 +80,12 @@ void drawGrid(int x, int y) {
       //If the node is selected, highlight it
       if (selected != null && grid[i][j].equals(selected)) {
         stroke(255,255,0);
+      }
+      pOwner = grid[i][j].getPlayer();
+      if (pOwner == 1) {
+        fill(p1C);
+      } else if (pOwner ==2) {
+        fill(p2C);
       }
       ellipse(bxSize*(i+0.5)+offset,bySize*(j+0.5)+offset,nodeSize,nodeSize);
     }
@@ -103,22 +117,36 @@ void drawGUI() {
 void mousePressed() {
   int x = mouseX/bxSize;
   int y = mouseY/bySize;
-  //If click outside grid bounds, do nothing
-  if (mouseX <= offset || mouseX >= xField+offset || mouseY <= offset || mouseY >= yField+offset) {
-    return;
-  }
-  //only select if not selected already and the node is owned by player
-  if (selected == null /*&& grid[x][y].getPlayer() == currentPlayer*/) {
-    int mx = (mouseX-10)%bxSize;
-    int my = (mouseY-10)%bySize;
-    float dist = sqrt(pow(bxSize/2-mx,2)+pow(bySize/2-my,2));
-    if (dist <= nodeSize/2) {
-      selected = grid[x][y];
+  if (!isStart) {
+    //If click outside grid bounds, do nothing
+    if (mouseX <= offset || mouseX >= xField+offset || mouseY <= offset || mouseY >= yField+offset) {
+      return;
     }
-  //if there is a selected node
-  } else if (selected != null) {
-    //checks if the currently selected node is not a player
-    selected.move(grid[x][y],selected.getAmount());
-    //Add a line to clear up the selected node
+    //only select if not selected already and the node is owned by player
+    if (selected == null /*&& grid[x][y].getPlayer() == currentPlayer*/) {
+      int mx = (mouseX-10)%bxSize;
+      int my = (mouseY-10)%bySize;
+      float dist = sqrt(pow(bxSize/2-mx,2)+pow(bySize/2-my,2));
+      if (dist <= nodeSize/2) {
+        selected = grid[x][y];
+      }
+    //if there is a selected node
+    } else if (selected != null) {
+      //checks if the currently selected node is not a player
+      selected.move(grid[x][y],selected.getAmount());
+      //Add a line to clear up the selected node
+    } 
   }
+    //the setup phase.
+    else {
+        grid[x][y].setPlayer(currentPlayer);
+        grid[x][y].setAmount(1);
+        currAdded++;
+        currentPlayer = currentPlayer%2+1;
+      if (currAdded >= numStartPos*2) {
+        isStart = false;
+
+      }
+    }
+  
 }
