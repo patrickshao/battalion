@@ -58,10 +58,12 @@ void makeGrid(int x,int y) {
 void mousePressed() {
   int x = mouseX/bxSize;
   int y = mouseY/bySize;
+  //only select if not selected already and the node is owned by player
   if (selected == null && grid[x][y].getPlayer() == currentPlayer) {
     selected = grid[x][y];
-  } else {
-      
-    
+    //if there is a selected node
+  } else if (selected != null) {
+    //checks if the currently selected node is not a player
+    selected.move(grid[x][y],selected.getAmount());   
   }
 }
