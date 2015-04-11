@@ -78,6 +78,10 @@ class Node{
     return (x==n.getX() && y==n.getY());
   }
   
+  public boolean isConnected(Node n){
+    return connected.contains(n);
+  }
+  
   public void move(Node target, int moving){
     if(connected.contains(target)){
       if(moving<=amount){
