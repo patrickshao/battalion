@@ -32,9 +32,9 @@ void makeGrid(int x,int y) {
       //Set up low/high parameters
       //Ensures we don't add nodes outside of grid
       int loX = max(i-1,0);
-      int hiX = min(i+1,x);
+      int hiX = min(i+1,x-1);
       int loY = max(j-1,0);
-      int hiY = min(j+1,y);
+      int hiY = min(j+1,y-1);
       
       //Loop through neighbors and add them
       for (int r = loX; r <= hiX; r++) {
