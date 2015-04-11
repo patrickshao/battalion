@@ -105,7 +105,7 @@ class Node{
           }
         }
         else{
-          //attack(target, moving);
+          attack(target, moving);
         }
       }
       else{
@@ -132,7 +132,7 @@ class Node{
       }
       else{//tie
         if((type=='r' && n.getType()=='s')||(type=='s' && n.getType()=='p')||(type=='p' && n.getType()=='r')){
-          n.decAmount();
+          n.decAmount();          
         }
         else if((type=='r'&&n.getType()=='p')||(type=='s'&&n.getType()=='r')||(type=='p'&&n.getType()=='s')){
           decAmount();
