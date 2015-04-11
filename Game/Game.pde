@@ -1,4 +1,8 @@
+
+
 //Text input implementation inside game was obtained from Daniel Shiffman,http://www.learningprocessing.com  Example 18-1: User input
+
+import ddf.minim.*;
 
 PImage bgImage;
 PImage uImage;
@@ -20,13 +24,18 @@ int currentPlayer = 1;
 boolean isStart = true;
 int numStartPos = 3;
 int currAdded = 0;
+AudioPlayer songPlayer;
+AudioPlayer battlePlayer;
+AudioPlayer marchPlayer;
+Minim minim;
+Minim nodeMinim;
 
 PFont f;
 
 // Variable to store text currently being typed
 String typing = "";
 // Variable to store saved text when return is hit
-String saved = "";
+String saved = "0";
 
 //Some GUI stuff
 int xGUIStart = xField+2*offset;
@@ -40,6 +49,11 @@ void setup() {
   bgImage = loadImage("images/background.jpg");
   size(xScreen,yScreen);
   makeGrid(xSize,ySize);
+  minim=new Minim(this);
+  songPlayer=minim.loadFile("sound/soundtrack.mp3");
+  battlePlayer=minim.loadFile("sound/battle.mp3");
+  marchPlayer=minim.loadFile("sound/march.mp3");
+  songPlayer.loop();
 }
 
 void draw(){
@@ -234,6 +248,12 @@ void mousePressed() {
     } else if (selected != null) {
       if (selected.isConnected(grid[x][y])) {
         selected.move(grid[x][y],Integer.parseInt(saved));
+        if(selected.isBattle){
+          battlePlayer.play();
+        }
+        else{
+          marchPlayer.play();
+        }
         System.out.println("move");
         switchPlayer();
                 

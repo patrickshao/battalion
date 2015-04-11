@@ -7,6 +7,7 @@ class Node{
   private char type;
   private int amount;
   private int x, y;
+  public boolean isBattle=false;
   
   public Node(int x, int y){
     this.x=x;
@@ -90,6 +91,7 @@ class Node{
     if(connected.contains(target)){
       if(moving<=amount){
         if(target.getPlayer()==0){
+          isBattle=false;
           target.setPlayer(controllingPlayer);
           target.setType(type);
           target.setAmount(moving);
@@ -101,6 +103,7 @@ class Node{
         }
         else if(target.getPlayer()==controllingPlayer){
           if(target.getType()==type){
+            isBattle=false;
             target.setAmount(target.getAmount()+moving);
             amount-=moving;
             if(amount==0){
@@ -113,6 +116,7 @@ class Node{
           }
         }
         else{
+          isBattle=true;
           attack(target, moving);
         }
       }
