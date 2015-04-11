@@ -8,7 +8,7 @@ int xSize = 10;
 int ySize = 10;
 int bxSize = xField/xSize;
 int bySize = yField/ySize;
-int nodeSize = 45;
+int nodeSize = (int)(bxSize*(.90));
 Node selected;
 int prevX;
 int prevY;
@@ -36,7 +36,6 @@ void makeGrid(int x,int y) {
   for (int i = 0; i < x; i++) {
     for(int j = 0; j <y; j++) {
       grid[i][j] = new Node(i,j);
-      //ellipse(bxSize*(i+0.5),bySize*(j+0.5),nodeSize,nodeSize);
     }
   }
   
@@ -71,7 +70,7 @@ void drawGrid(int x, int y) {
       fill(255);
       stroke(0);
       //If the node is selected, highlight it
-      if (selected != null && grid[x][y]==selected) {
+      if (selected != null && grid[i][j].equals(selected)) {
         stroke(255,255,0);
       }
       ellipse(bxSize*(i+0.5)+offset,bySize*(j+0.5)+offset,nodeSize,nodeSize);
@@ -109,9 +108,14 @@ void mousePressed() {
     return;
   }
   //only select if not selected already and the node is owned by player
-  if (selected == null && grid[x][y].getPlayer() == currentPlayer) {
-    selected = grid[x][y];
-    //if there is a selected node
+  if (selected == null /*&& grid[x][y].getPlayer() == currentPlayer*/) {
+    int mx = (mouseX-10)%bxSize;
+    int my = (mouseY-10)%bySize;
+    float dist = sqrt(pow(bxSize/2-mx,2)+pow(bySize/2-my,2));
+    if (dist <= nodeSize/2) {
+      selected = grid[x][y];
+    }
+  //if there is a selected node
   } else if (selected != null) {
     //checks if the currently selected node is not a player
     selected.move(grid[x][y],selected.getAmount());
