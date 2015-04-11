@@ -137,6 +137,7 @@ class Node{
     }
    else if(amount==0){
       setPlayer(0);
+      setType(' ');
    }   
   }
 }
