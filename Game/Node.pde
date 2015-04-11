@@ -73,6 +73,6 @@ class Node{
   public void attack(Node n){
     
   
-  
+  }
     
 }
