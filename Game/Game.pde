@@ -73,21 +73,43 @@ void makeGrid(int x,int y) {
 
 void drawGrid(int x, int y) {
   int pOwner;
+  int unitVal;
+  ArrayList<Node> nList;
   for (int i = 0; i < x; i++) {
     for(int j = 0; j <y; j++) {
+      //default color settings
       fill(255);
       stroke(0);
+      
       //If the node is selected, highlight it
       if (selected != null && grid[i][j].equals(selected)) {
         stroke(255,255,0);
       }
+      
+      //Check for color change
       pOwner = grid[i][j].getPlayer();
       if (pOwner == 1) {
         fill(p1C);
       } else if (pOwner ==2) {
         fill(p2C);
       }
+      
+      //Draw a connection
+      nList = grid[i][j].getNeighbor
+      fill(0,255,0);
+      
+      //Draw the nodes
       ellipse(bxSize*(i+0.5)+offset,bySize*(j+0.5)+offset,nodeSize,nodeSize);
+      
+      //Draw the unit numbers
+      fill(0);
+      unitVal = grid[i][j].getAmount();
+      //Only draw units if higher than 0 (non-empty node)
+      if (unitVal > 0) {
+        textSize(20);
+        textAlign(CENTER);
+        text(unitVal,i*bxSize+(bxSize/2)+offset, j*bySize+(bySize/2)+offset);
+      }
     }
   }
 }
