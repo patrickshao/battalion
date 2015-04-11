@@ -32,8 +32,7 @@ Minim nodeMinim;
 
 PFont f;
 
-// Variable to store text currently being typed
-String typing = "";
+import static javax.swing.JOptionPane.*;
 // Variable to store saved text when return is hit
 String saved = "0";
 
@@ -90,9 +89,10 @@ void makeGrid(int x,int y) {
       for (int r = loX; r <= hiX; r++) {
         for (int c = loY; c <= hiY; c++) {
           //Make sure we are not adding self as a neighbor
-          if (r != i && c != j ) {
-            grid[i][j].addNeighbor(grid[r][c]);
+          if (r == i && c == j ) {
+            continue;
           }
+          grid[i][j].addNeighbor(grid[r][c]);
         }
       }
       
@@ -194,6 +194,7 @@ void drawSprite(char t, float x, float y) {
  */
 void drawGUI() {
   fill(255);
+  rectMode(CENTER);
   rect(xGUIStart+xShift, yGUIStart+40,240,50);
   int textS = 32;
   if (currentPlayer == 1) {
@@ -205,15 +206,7 @@ void drawGUI() {
   textSize(textS);
   textAlign(CENTER);
   text("Player "+ currentPlayer+"'s Turn",xGUIStart+xShift, yGUIStart+textS+20);
-  fill(200);
-  rectMode(CENTER);
-  rect(xGUIStart+(xScreen-xGUIStart)/2,yGUIStart+yScreen/2,160,35);
-  // Display Numbers for Unit Moving
-  fill(255);
-   text("Unit Move",xGUIStart+xShift, yGUIStart+textS+yScreen/2-60);
-  fill(0);
-  textSize(20);
-  text(typing,xGUIStart+(xScreen-xGUIStart)/2,yGUIStart+yScreen/2+5);
+  
 }
 
 void switchPlayer() {
@@ -235,6 +228,9 @@ void mousePressed() {
     if (mouseX <= offset || mouseX >= xField+offset || mouseY <= offset || mouseY >= yField+offset) {
       return;
     }
+    if (x >= xSize || y >= ySize) {
+      return;
+    }
   if (!isStart) {
     //only select if not selected already and the node is owned by player
     if (selected == null && grid[x][y].getPlayer() == currentPlayer) {
@@ -246,8 +242,29 @@ void mousePressed() {
       }
     //if there is a selected node
     } else if (selected != null) {
+      if (!grid[x][y].isNeighbor(selected)) {
+        return;
+      }
+      int maxAmount = selected.getAmount();
+      int sendAmount = maxAmount;
       if (selected.isConnected(grid[x][y])) {
-        selected.move(grid[x][y],Integer.parseInt(saved));
+         saved = showInputDialog("Please enter unit amount to move. (Default move all units).");
+        if (saved == null) {
+          exit();
+        } else if (saved == "") {
+        } else if (!saved.matches("[0-9]+$")) {
+           showMessageDialog(null, "Invalid Number, sending default unit amount.", 
+          "Alert", ERROR_MESSAGE);
+          selected.move(grid[x][y],grid[x][y].getAmount());
+        } else {
+          if (Integer.parseInt(saved) > maxAmount) {
+            showMessageDialog(null, "Number too high, sending default unit amount.", 
+            "Alert", ERROR_MESSAGE);
+          } else {
+            sendAmount = Integer.parseInt(saved);
+          }
+        }
+        selected.move(grid[x][y],sendAmount);
         if(selected.isBattle){
           battlePlayer.play();
         }
@@ -286,15 +303,3 @@ void mousePressed() {
   
 }
 
-void keyPressed() {
-  // If the return key is pressed, save the String and clear it
-  if (key == '\n' ) {
-    saved = typing;
-    // A String can be cleared by setting it equal to ""
-    typing = ""; 
-  } else {
-    // Otherwise, concatenate the String
-    // Each character typed by the user is added to the end of the String variable.
-    typing = typing + key; 
-  }
-}
