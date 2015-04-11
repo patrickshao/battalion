@@ -66,6 +66,18 @@ class Node{
     controllingPlayer=p;
   }
   
+  public int getX(){
+    return x;
+  }
+  
+  public int getY(){
+    return y;
+  }
+  
+  public boolean equals(Node n){
+    return (x==n.getX() && y==n.getY());
+  }
+  
   public void move(Node target, int moving){
     if(connected.contains(target)){
       if(moving<=amount){
