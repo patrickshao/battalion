@@ -31,12 +31,12 @@ class Node{
   }
   
   public boolean isNeighbor(Node n){
-    if (neighbors.contains(n)){return true};
+    if (neighbors.contains(n)){return true;}
     return false;
   }
   
   public boolean isConnected(Node n){
-    if (connected.contains(n)){return true};
+    if (connected.contains(n)){return true;}
     return false;
   
   public void setAmount(int i){
@@ -94,9 +94,13 @@ class Node{
     }
   }
   
-//  public void attack(Node n, int amount){
-//    opponent=
-//  
-//  }
+  public void attack(Node n, int amount){
+    opponent=n.getType();
+    oppamt=n.getAmount();
+    if (amount>0){
+      myroll=int(random(6))
+      opproll=int(random(6))
+      
+  }
     
 }
