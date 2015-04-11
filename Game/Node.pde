@@ -105,12 +105,13 @@ class Node{
       int opproll=int(random(6));
       if (myroll>opproll){
         n.decAmount();
+      }
       else if (opproll>myroll){
         decAmount();
       }
       else{//tie
         
-    }
+      }  
+    }   
   }
-    
 }
