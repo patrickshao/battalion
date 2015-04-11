@@ -179,6 +179,8 @@ void drawSprite(char t, float x, float y) {
  * 
  */
 void drawGUI() {
+  fill(255);
+  rect(xGUIStart+xShift, yGUIStart+40,240,50);
   int textS = 32;
   if (currentPlayer == 1) {
     fill(p1C);
@@ -188,11 +190,13 @@ void drawGUI() {
   }
   textSize(textS);
   textAlign(CENTER);
-  text("Player "+ currentPlayer+"'s Turn",xGUIStart+xShift, yGUIStart+textS);
+  text("Player "+ currentPlayer+"'s Turn",xGUIStart+xShift, yGUIStart+textS+20);
   fill(200);
   rectMode(CENTER);
-  rect(xGUIStart+(xScreen-xGUIStart)/2,yGUIStart+yScreen/2,100,35);
-  // Display everything
+  rect(xGUIStart+(xScreen-xGUIStart)/2,yGUIStart+yScreen/2,160,35);
+  // Display Numbers for Unit Moving
+  fill(255);
+   text("Unit Move",xGUIStart+xShift, yGUIStart+textS+yScreen/2-60);
   fill(0);
   textSize(20);
   text(typing,xGUIStart+(xScreen-xGUIStart)/2,yGUIStart+yScreen/2+5);
