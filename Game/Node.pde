@@ -26,6 +26,15 @@ class Node{
     connected.add(n);
   }
   
+  public boolean isNeighbor(Node n){
+    if neighbors.contains(n){return true};
+    return false;
+  }
+  
+  public boolean isConnected(Node n){
+    if connected.contains(n){return true};
+    return false;
+  
   public void setAmount(int i){
     amount=i;
   }
