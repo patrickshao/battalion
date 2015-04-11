@@ -78,6 +78,14 @@ class Node{
     return (x==n.getX() && y==n.getY());
   }
   
+  public ArrayList<Node> getNeighbors(){
+    return neighbors;
+  }
+  
+  public ArrayList<Node> getConnected(){
+    return connected;
+  }
+  
   public void move(Node target, int moving){
     if(connected.contains(target)){
       if(moving<=amount){
