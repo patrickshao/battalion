@@ -6,8 +6,8 @@ int xField = 600;
 int yField = 600;
 int offset = 10;
 Node[][] grid;
-int xSize = 10;
-int ySize = 10;
+int xSize = 5;
+int ySize = 5;
 int bxSize = xField/xSize;
 int bySize = yField/ySize;
 int nodeSize = (int)(bxSize*(.80));
@@ -214,6 +214,13 @@ void mousePressed() {
     else {
         grid[x][y].setPlayer(currentPlayer);
         grid[x][y].setAmount(1);
+        if (currAdded == 0|| currAdded == 1) {
+          grid[x][y].setType('r');                    
+        } else if (currAdded == 2 || currAdded ==3) {
+          grid[x][y].setType('p');
+        } else {
+          grid[x][y].setType('s');
+        }
         currAdded++;
         currentPlayer = currentPlayer%2+1;
       if (currAdded >= numStartPos*2) {
