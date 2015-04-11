@@ -133,7 +133,7 @@ void mousePressed() {
     //if there is a selected node
     } else if (selected != null) {
       if (selected.isConnected(grid[x][y])) {
-        selected.move(grid[x][y],grid[x][y].getAmount());
+        selected.move(grid[x][y],selected.getAmount());
         System.out.println("move");
         switchPlayer();
                 
