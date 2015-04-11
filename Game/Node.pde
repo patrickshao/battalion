@@ -108,7 +108,7 @@ class Node{
   public void attack(Node n, int amt){
     char opponent=n.getType();
     int oppamt=n.getAmount();
-    if (amount>0){
+    if (amt>0){
       int myroll=int(random(6));
       int opproll=int(random(6));
       if (myroll>opproll){
@@ -134,6 +134,9 @@ class Node{
         n.setPlayer(0);
         move(n, amt);
       }
-    }   
+    }
+   else if(amount==0){
+      setPlayer(0);
+   }   
   }
 }
