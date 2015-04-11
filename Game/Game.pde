@@ -20,7 +20,7 @@ void makeGrid(int x,int y) {
   for (int i = 0; i < x; i++) {
     for(int j = 0; j <y; j++) {
       grid[i][j] = new Node(i,j);
-      ellipse(100,100,100,100);
+      ellipse(bxSize*(i+0.5),bySize*(j+0.5),50,50);
     }
   }
   
