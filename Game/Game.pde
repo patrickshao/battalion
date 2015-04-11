@@ -1,9 +1,11 @@
 int xScreen = 1000;
-int yScreen = 750;
+int yScreen = 700;
 Node[][] grid;
 int xSize = 10;
 int ySize = 10;
 int nodeSize = 50;
+int bxSize = xScreen/xSize;
+int bySize = yScreen/ySize;
 
 void setup() {
   size(xScreen,yScreen);
