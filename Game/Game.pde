@@ -14,6 +14,7 @@ void draw(){
 }
 
 void makeGrid(int x,int y) {
+  //Setup the nodes
   grid = new Node[x][y];
   for (int i = 0; i < x; i++) {
     for(int j = 0; j <y; j++) {
@@ -31,9 +32,10 @@ void makeGrid(int x,int y) {
       int loY = max(j-1,0);
       int hiY = min(j+1,j);
       
-      //Loop through 
+      //Loop through neighbors and add them
       for (r = loX; r <= hiX; r++) {
         for (c = loY; c <= hiY; c++) {
+          //Make sure we are not adding self as a neighbor
           if (r != i && c != j) {
             grid[i][j].addNeighbor(grid[r][c]);
           }
