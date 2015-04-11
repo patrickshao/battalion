@@ -32,14 +32,14 @@ void makeGrid(int x,int y) {
       int loX = max(i-1,0);
       int hiX = min(i+1,x);
       int loY = max(j-1,0);
-      int hiY = min(j+1,j);
+      int hiY = min(j+1,y);
       
       //Loop through neighbors and add them
       for (int r = loX; r <= hiX; r++) {
         for (int c = loY; c <= hiY; c++) {
           //Make sure we are not adding self as a neighbor
           if (r != i && c != j ) {
-            //grid[i][j].addNeighbor(grid[r][c]);
+            grid[i][j].addNeighbor(grid[r][c]);
           }
         }
       }
