@@ -40,7 +40,7 @@ class DialogBox{
   
   //move this part of keypressed into game. Make a dialog box called db.
   void keyPressed() {
-    if db.isActive(){
+    if (isActive()){
       // If the return key is pressed, save the String and clear it
       if (key == '\n' ) {
         saved = typing;
@@ -52,6 +52,14 @@ class DialogBox{
         typing = typing + key; 
       }
     }
+  }
+  
+  public boolean isActive(){
+    return isActive();
+  }
+  
+  public void toggleActive(){
+    isActive = !isActive;
   }
   
   String getSaved(){
